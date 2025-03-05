@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muito Importante</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 98vh;
+        }
+
+        a {
+            text-decoration: none; 
+        }
+
+        .background {
+            background: #191919;
+            height: 100%;
+            width: 100%;
+            margin: auto;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .box {
+            font-size: 50px;
+            color: rgb(255, 255, 255);
+            height: 350px;
+            width: 500px;
+            border-radius: 10px;
+            background: #830f0f;
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            height: 50px;
+            width: 150px;
+        }
+
+        button {
+            height: 30px;
+            width: 50px;
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+            color: blue;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="box">
+            <p>(pedido)</p>
+            <div class="button-container">
+                <button id="yes" onclick="redirect();">SIM</button>
+                <button id="no">NÃO</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let button = document.getElementById('no');
+    let height = window.innerHeight - 50;
+    let width = window.innerWidth - 50;
+
+    button.addEventListener('mouseover', function () {
+        button.style.position = "absolute";
+        button.style.top = Math.random() * height + "px";
+        button.style.left = Math.random() * width + "px";
+    })
+
+    function redirect() {
+        window.location.href = "spotify:track:2dHHgzDwk4BJdRwy9uXhTO?si=a4b0f3f296804353";
+    };
+</script>
+</html>
