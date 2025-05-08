@@ -9,60 +9,155 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 98vh;
-            background: black;
-        }
-
-        a {
-            text-decoration: none; 
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            overflow: hidden; /* Evita rolagem desnecessária */
         }
 
         .background {
-            background: black;
-            height: 100%;
-            width: 100%;
+            background: rgba(25, 25, 25, 0.95);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            border: 2px solid #fff;
+            height: 90%;
+            width: 90%;
             margin: auto;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .box {
             font-size: 50px;
-            color: rgb(255, 255, 255);
+            color: #fff;
             height: 350px;
             width: 500px;
             border-radius: 10px;
-            background: #830f0f;
+            background: linear-gradient(135deg, #830f0f, #ff4e50);
             flex-direction: column;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            animation: slideIn 1s ease-in-out;
         }
 
         .button-container {
             display: flex;
             justify-content: space-around;
             height: 50px;
-            width: 150px;
+            width: 200px;
+            margin-top: 20px;
         }
 
         button {
-            height: 30px;
-            width: 50px;
-            background: rgb(255, 255, 255);
-            border-radius: 10px;
-            color: blue;
-            font-weight: 600;
+            height: 40px;
+            width: 80px;
+            background: #fff;
+            border: none;
+            border-radius: 20px;
+            color: #830f0f;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
+        button:hover {
+            background: #830f0f;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .background {
+                height: auto;
+                width: 100%;
+                border-radius: 10px;
+                padding: 20px;
+            }
+
+            .box {
+                font-size: 24px; /* Ajuste para tamanhos menores */
+                height: auto;
+                width: 100%;
+                padding: 20px;
+                box-shadow: none;
+            }
+
+            .button-container {
+                flex-direction: row; /* Alinha os botões lado a lado */
+                justify-content: space-around; /* Espaçamento uniforme entre os botões */
+                width: 100%;
+                gap: 0; /* Remove o espaçamento extra */
+            }
+
+            button {
+                width: 40%; /* Ajusta a largura para caber lado a lado */
+                height: 35px;
+                font-size: 12px; /* Reduzido ainda mais para tamanhos menores */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                font-size: 18px; /* Ajuste adicional para telas muito pequenas */
+            }
+
+            .button-container {
+                flex-direction: row; /* Mantém os botões lado a lado */
+                justify-content: space-around;
+                width: 100%;
+            }
+
+            button {
+                width: 35%; /* Ajusta ainda mais a largura para telas menores */
+                height: 30px;
+                font-size: 10px; /* Ajuste adicional para telas muito pequenas */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="background">
         <div class="box">
-            <p>Posso comprar sorvete?</p>
+            <p>(pedido)</p>
             <div class="button-container">
                 <button id="yes" onclick="redirect();">SIM</button>
                 <button id="no">NÃO</button>
@@ -72,17 +167,27 @@
 </body>
 <script>
     let button = document.getElementById('no');
-    let height = window.innerHeight - 50;
-    let width = window.innerWidth - 50;
 
-    button.addEventListener('mouseover', function () {
-        button.style.position = "absolute";
-        button.style.top = Math.random() * height + "px";
-        button.style.left = Math.random() * width + "px";
-    })
+    function updateButtonBounds() {
+        const rect = button.getBoundingClientRect();
+        const maxHeight = window.innerHeight - rect.height;
+        const maxWidth = window.innerWidth - rect.width;
+
+        button.addEventListener('mouseover', function () {
+            button.style.position = "absolute";
+            button.style.top = Math.random() * maxHeight + "px";
+            button.style.left = Math.random() * maxWidth + "px";
+            button.style.transform = `rotate(${Math.random() * 360}deg)`;
+            button.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            button.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        });
+    }
+
+    window.addEventListener('resize', updateButtonBounds);
+    updateButtonBounds();
 
     function redirect() {
-        window.location.href = "https://youtu.be/KN3IemyqJJw?si=N6y5beYX9EF4l5qN";
+        window.location.href = "spotify:track:2dHHgzDwk4BJdRwy9uXhTO?si=a4b0f3f296804353";
     };
 </script>
 </html>
