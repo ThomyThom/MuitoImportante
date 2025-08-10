@@ -65,19 +65,45 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 10px 0 #fff0;
         }
 
         button:hover {
             background: #830f0f;
             color: #fff;
             transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px 4px #fff8;
         }
 
         button:active {
             transform: scale(0.95);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Partículas de fundo */
+        #particles-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* Brilho suave nos botões */
+        button {
+            /* ...existing code... */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 10px 0 #fff0;
+        }
+        button:hover {
+            /* ...existing code... */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), 0 0 20px 4px #fff8;
+        }
+        /* Animação de pulso para o botão SIM */
+        .pulse {
+            animation: pulseBtn 0.5s;
+        }
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         @keyframes fadeIn {
@@ -98,6 +124,39 @@
                 transform: translateY(0);
                 opacity: 1;
             }
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .shine {
+            box-shadow: 0 0 30px 10px #fff, 0 0 60px 20px #ff4e50;
+            animation: shinePulse 0.5s;
+        }
+        @keyframes shinePulse {
+            0% { box-shadow: 0 0 0 0 #fff; }
+            50% { box-shadow: 0 0 30px 10px #fff, 0 0 60px 20px #ff4e50; }
+            100% { box-shadow: 0 0 0 0 #fff; }
+        }
+        .dynamic-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 30px;
+            border-radius: 20px;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+            pointer-events: none;
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -155,18 +214,95 @@
     </style>
 </head>
 <body>
+    <canvas id="particles-bg"></canvas>
+    <div class="dynamic-message" id="dynamicMsg"></div>
     <div class="background">
         <div class="box">
-            <p>(pedido)</p>
+            <p>Você é minha neném?</p>
             <div class="button-container">
                 <button id="yes" onclick="redirect();">SIM</button>
                 <button id="no">NÃO</button>
             </div>
         </div>
     </div>
+    <canvas class="confetti" id="confetti"></canvas>
 </body>
 <script>
+    // Partículas de fundo animadas
+    const particlesCanvas = document.getElementById('particles-bg');
+    const pCtx = particlesCanvas.getContext('2d');
+    function resizeParticles() {
+        particlesCanvas.width = window.innerWidth;
+        particlesCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeParticles);
+    resizeParticles();
+    let particles = [];
+    for(let i=0;i<60;i++){
+        particles.push({
+            x: Math.random()*window.innerWidth,
+            y: Math.random()*window.innerHeight,
+            r: Math.random()*2+1,
+            dx: (Math.random()-0.5)*0.7,
+            dy: (Math.random()-0.5)*0.7,
+            color: `rgba(255,255,255,${Math.random()*0.6+0.2})`
+        });
+    }
+    function animateParticles() {
+        pCtx.clearRect(0,0,particlesCanvas.width,particlesCanvas.height);
+        for(let p of particles){
+            p.x += p.dx;
+            p.y += p.dy;
+            if(p.x < 0 || p.x > window.innerWidth) p.dx *= -1;
+            if(p.y < 0 || p.y > window.innerHeight) p.dy *= -1;
+            pCtx.beginPath();
+            pCtx.arc(p.x, p.y, p.r, 0, 2*Math.PI);
+            pCtx.fillStyle = p.color;
+            pCtx.fill();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
     let button = document.getElementById('no');
+    let yesButton = document.getElementById('yes');
+    let confettiCanvas = document.getElementById('confetti');
+    let dynamicMsg = document.getElementById('dynamicMsg');
+
+    // Confete animado ao clicar em SIM
+    function showConfetti() {
+        const ctx = confettiCanvas.getContext('2d');
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        let particles = [];
+        for(let i=0;i<120;i++){
+            particles.push({
+                x: Math.random()*confettiCanvas.width,
+                y: Math.random()*confettiCanvas.height/2,
+                r: Math.random()*8+4,
+                color: `hsl(${Math.random()*360},100%,60%)`,
+                vx: (Math.random()-0.5)*6,
+                vy: Math.random()*6+2
+            });
+        }
+        let frame = 0;
+        function animate() {
+            ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+            for(let p of particles){
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, 2*Math.PI);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2;
+            }
+            frame++;
+            if(frame < 60) requestAnimationFrame(animate);
+            else ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+        }
+        animate();
+    }
 
     function updateButtonBounds() {
         const rect = button.getBoundingClientRect();
@@ -177,9 +313,17 @@
             button.style.position = "absolute";
             button.style.top = Math.random() * maxHeight + "px";
             button.style.left = Math.random() * maxWidth + "px";
-            button.style.transform = `rotate(${Math.random() * 360}deg)`;
-            button.style.backgroundColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-            button.style.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            button.style.transform = `rotate(${Math.random() * 360}deg) scale(1.1)`;
+            // Mostra mensagem temporária
+            dynamicMsg.textContent = "Você tentou fugir! 😂";
+            dynamicMsg.style.display = "block";
+            setTimeout(() => dynamicMsg.style.display = "none", 30000);
+        });
+
+        // Efeito de pulso no botão SIM ao clicar
+        yesButton.addEventListener('click', function () {
+            yesButton.classList.add('pulse');
+            setTimeout(() => yesButton.classList.remove('pulse'), 500);
         });
     }
 
@@ -187,7 +331,11 @@
     updateButtonBounds();
 
     function redirect() {
-        window.location.href = "spotify:track:2dHHgzDwk4BJdRwy9uXhTO?si=a4b0f3f296804353";
+        showConfetti();
+        topMsg.textContent = "Parabéns! Você aceitou! 🎉";
+        setTimeout(() => {
+            window.location.href = "spotify:track:2dHHgzDwk4BJdRwy9uXhTO?si=a4b0f3f296804353";
+        }, 1800);
     };
 </script>
 </html>
