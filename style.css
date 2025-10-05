@@ -1,0 +1,157 @@
+/* RESET E CONFIGURAÇÕES GLOBAIS */
+:root {
+    --color-background: #050208;
+    --color-spotlight: #120b1f;
+    --color-text: #e0e0e0;
+    --color-title: #ffffff;
+    --color-yes: #4a00e0;
+    --color-yes-glow: #8e2de2;
+    --color-no: #c21500;
+    --color-no-glow: #ff416c;
+
+    /* Variáveis para a posição do mouse, controladas via JS */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    height: 100vh;
+    overflow: hidden; /* Esconde barras de rolagem */
+    display: grid;
+    place-items: center;
+
+    /* EFEITO SPOTLIGHT CÓSMICO */
+    background-image: 
+        radial-gradient(
+            circle at var(--mouse-x) var(--mouse-y),
+            var(--color-spotlight) 0%,
+            var(--color-background) 25%
+        ),
+        url('https://www.transparenttextures.com/patterns/stardust.png');
+    transition: background-position 0.1s ease-out;
+}
+
+/* CONTAINER PRINCIPAL */
+.invitation-container {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* CONTEÚDO DE TEXTO */
+.title {
+    font-family: 'Teko', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem); /* Fonte responsiva */
+    color: var(--color-title);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.5rem;
+    min-height: 1.2em; /* Evita que o layout "pule" durante a digitação */
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    line-height: 1.6;
+    min-height: 3.2em; /* Evita que o layout "pule" durante a digitação */
+}
+
+/* Efeito de cursor de digitação */
+.typing-cursor::after {
+    content: '|';
+    font-weight: bold;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { color: transparent; }
+    50% { color: var(--color-text); }
+}
+
+/* BOTÕES */
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap; 
+    /* Escondido por padrão, para aparecer após a digitação */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.button-wrapper.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* NOVO: Placeholder para manter o espaço dos botões */
+.btn-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 150px; /* Garante que o espaço seja o mesmo do botão */
+    min-height: 51px; /* Altura aproximada do botão para evitar saltos */
+}
+
+.btn {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    color: var(--color-title);
+    border: none;
+    padding: 0.75rem 2.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 150px; /* Largura fixa para consistência */
+}
+
+/* Botão SIM */
+.btn--yes {
+    background-color: var(--color-yes);
+    animation: pulse-yes 2s infinite;
+}
+
+.btn--yes:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--color-yes-glow);
+}
+
+/* Botão NÃO */
+.btn--no {
+    background-color: var(--color-no);
+    animation: pulse-no 1.5s infinite;
+}
+
+#noButton {
+    position: absolute; 
+}
+
+/* ANIMAÇÕES DE PULSO */
+@keyframes pulse-yes {
+    0% { box-shadow: 0 0 10px var(--color-yes); }
+    50% { box-shadow: 0 0 25px var(--color-yes-glow); }
+    100% { box-shadow: 0 0 10px var(--color-yes); }
+}
+
+@keyframes pulse-no {
+    0% { box-shadow: 0 0 10px var(--color-no); }
+    50% { box-shadow: 0 0 25px var(--color-no-glow); }
+    100% { box-shadow: 0 0 10px var(--color-no); }
+}
