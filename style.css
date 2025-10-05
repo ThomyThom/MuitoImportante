@@ -59,13 +59,23 @@ body {
     text-transform: uppercase;
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     margin-bottom: 0.5rem;
-    min-height: 1.2em; /* Evita que o layout "pule" durante a digitação */
+    min-height: 1.2em;
+    /* NOVO: Transição para o fade out */
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .subtitle {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     line-height: 1.6;
-    min-height: 3.2em; /* Evita que o layout "pule" durante a digitação */
+    min-height: 3.2em;
+    /* NOVO: Transição para o fade out */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Classe para animar o fade out */
+.fade-out {
+    opacity: 0 !important;
+    transform: translateY(-20px) !important;
 }
 
 /* Efeito de cursor de digitação */
@@ -86,7 +96,6 @@ body {
     justify-content: center;
     gap: 1.5rem;
     flex-wrap: wrap; 
-    /* Escondido por padrão, para aparecer após a digitação */
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
@@ -99,13 +108,12 @@ body {
     transform: translateY(0);
 }
 
-/* NOVO: Placeholder para manter o espaço dos botões */
 .btn-placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 150px; /* Garante que o espaço seja o mesmo do botão */
-    min-height: 51px; /* Altura aproximada do botão para evitar saltos */
+    min-width: 150px;
+    min-height: 51px;
 }
 
 .btn {
@@ -119,10 +127,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 150px; /* Largura fixa para consistência */
+    width: 150px;
 }
 
-/* Botão SIM */
 .btn--yes {
     background-color: var(--color-yes);
     animation: pulse-yes 2s infinite;
@@ -133,7 +140,6 @@ body {
     box-shadow: 0 0 30px var(--color-yes-glow);
 }
 
-/* Botão NÃO */
 .btn--no {
     background-color: var(--color-no);
     animation: pulse-no 1.5s infinite;
