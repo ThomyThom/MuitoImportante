@@ -59,26 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- LÓGICA DO CLIQUE NO BOTÃO "SIM" ---
-    async function openSpotifyLink() {
+     function openSpotifyLink() {
         // Desativa os botões para evitar múltiplos cliques
         yesButton.style.pointerEvents = 'none';
         noButton.style.display = 'none';
 
         // 1. Esconde os botões
         buttonWrapper.classList.add('fade-out');
-        await new Promise(resolve => setTimeout(resolve, 300));
+        new Promise(resolve => setTimeout(resolve, 300));
 
         // 2. Apaga a pergunta (VELOCIDADE AUMENTADA)
-        await backspace(subtitleElement, 25); // Era 40
-        await new Promise(resolve => setTimeout(resolve, 300));
+        backspace(subtitleElement, 25); // Era 40
+        new Promise(resolve => setTimeout(resolve, 300));
 
         // 3. Apaga o título (VELOCIDADE AUMENTADA)
-        await backspace(titleElement, 40); // Era 70
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // 4. Reescreve a mensagem final
-        await typewriter(titleElement, "Excelente escolha.", 120);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        backspace(titleElement, 40); // Era 70
+        new Promise(resolve => setTimeout(resolve, 500));
+        
+        // 4. Reescreve a mensagem
+        typewriter(titleElement, "Excelente escolha.", 120);
+        new Promise(resolve => setTimeout(resolve, 1000));
 
         // 5. Redireciona
         window.location.href = 'spotify:track:2p8IUWQDrpjuFltbdgLOag?si=7b1b46eda088425b';
