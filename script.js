@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- LÓGICA DO CLIQUE NO BOTÃO "SIM" ---
-    const handleYesClick = async () => {
+    async function openSpotifyLink() {
         // Desativa os botões para evitar múltiplos cliques
         yesButton.style.pointerEvents = 'none';
         noButton.style.display = 'none';
@@ -82,9 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Redireciona
         window.location.href = 'spotify:track:2p8IUWQDrpjuFltbdgLOag?si=7b1b46eda088425b';
-    };
-
-    yesButton.addEventListener('click', handleYesClick);
+    }
 
 
     // --- LÓGICA DO BOTÃO "NÃO" FUJÃO (Mantida) ---
