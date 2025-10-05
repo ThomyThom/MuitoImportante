@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES DE ANIMAÇÃO DE TEXTO ---
 
-    // Função que simula a digitação
     const typewriter = (element, text, speed = 80) => {
         return new Promise(resolve => {
             let i = 0;
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // NOVA: Função que simula o efeito de backspace
     const backspace = (element, speed = 50) => {
         return new Promise(resolve => {
             element.classList.add('typing-cursor');
@@ -58,29 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
     startAnimationSequence();
 
 
-    // --- NOVA LÓGICA DO CLIQUE NO BOTÃO "SIM" ---
-    const handleYesClick = async () => {
+    // --- LÓGICA DO CLIQUE NO BOTÃO "SIM" ATUALIZADA ---
+    const handleYesClick = async (event) => {
+        // 1. Previne o redirecionamento imediato para rodar a animação
+        event.preventDefault();
+
         // Desativa os botões para evitar múltiplos cliques
         yesButton.style.pointerEvents = 'none';
         noButton.style.display = 'none';
 
-        // 1. Esconde os botões
         buttonWrapper.classList.add('fade-out');
         await new Promise(resolve => setTimeout(resolve, 300));
 
-        // 2. Apaga a pergunta
-        await backspace(subtitleElement, 20);
+        await backspace(subtitleElement, 25);
         await new Promise(resolve => setTimeout(resolve, 300));
 
-        // 3. Apaga o título
-        await backspace(titleElement, 30);
+        await backspace(titleElement, 40);
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        // 4. Reescreve a mensagem final
         await typewriter(titleElement, "Excelente escolha.", 120);
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // 5. Redireciona
+        // 5. Redireciona de forma compatível
         window.location.href = 'spotify:track:2p8IUWQDrpjuFltbdgLOag?si=7b1b46eda088425b';
     };
 
@@ -96,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomX = Math.floor(Math.random() * maxX);
         const randomY = Math.floor(Math.random() * maxY);
         noButton.style.left = `${randomX}px`;
-        noButton.style.top = `${randomY}px`;
+        noButton.style.top = `${randomX}px`;
     };
 
     noButton.addEventListener('mouseover', moveButton);
